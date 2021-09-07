@@ -1,0 +1,44 @@
+body {
+    background-color: rgb(4, 4, 63);
+    display: flex;
+    flex-direction: column;
+    max-width: 80vw;
+    margin: auto;
+    font-size: 16pt;
+}
+
+@media screen and (min-width: 1000px) {
+    body {
+        max-width: 800px;
+        font-size: 24pt;
+    }
+}
+
+textarea {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: rgb(215, 0, 95) 2pt solid;
+    color: white;
+    font-size: 1em;
+    margin: 2rem 0;
+    height: 25vh;
+    font-family: monospace;
+}
+
+#encrapted {
+    height: 40vh;
+}
+
+div {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    background-color: rgb(215, 0, 95);
+    border: none;
+    color: white;
+    font-size: 1em;
+    width: 47.5%;
+    margin: 0 0 auto 0;
+    height: 6rem;
+}
