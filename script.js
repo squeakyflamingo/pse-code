@@ -29,7 +29,8 @@ const encraption = async (text) => {
             if (char === " ") return "||"
 
             let filteredElements = elements.filter(el => el.toLowerCase().includes(char.toLowerCase()),)
-            let randomIndex = await getRandomOrgNumber(1, 0, filteredElements.length - 1, 1, 10)
+            // let randomIndex = await getRandomOrgNumber(1, 0, filteredElements.length - 1, 1, 10)
+            let randomIndex = Math.floor(Math.random() * filteredElements.length)
             let element = filteredElements[randomIndex]
             if (!element) return char
 
