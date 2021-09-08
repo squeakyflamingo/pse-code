@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let doDecrapt = document.getElementById("buttondecrapt")
 
     doEncrapt.addEventListener("mousedown", () => {
-        encraptedText.value = encraption(plainText.value)
+        encraption(plainText.value).then((text) => {
+            encraptedText.value = text
+        })
     })
 
     doDecrapt.addEventListener("mousedown", () => {
@@ -16,36 +18,43 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 })
 
-const encraption = (text) => {
-    return text.split("").map((char) => {
-        if(char === " ") return "||"
+const getRandomOrgNumber = async (num, min, max, col, base) => {
+    const response = await fetch(`https://www.random.org/integers/?num=${num}&min=${min}&max=${max}&col=${col}&base=${base}&format=plain&rnd=new`)
+    return parseInt(await response.text())
+}
 
-        let filteredElements = elements.filter(el => el.toLowerCase().includes(char.toLowerCase()))
-        let element = filteredElements[Math.floor(Math.random() * filteredElements.length)]
+const encraption = async (text) => {
+    return Promise.all(
+        text.split("").map(async (char) => {
+            if (char === " ") return "||"
 
-        if(!element) return char
+            let filteredElements = elements.filter(el => el.toLowerCase().includes(char.toLowerCase()),)
+            let randomIndex = await getRandomOrgNumber(1, 0, filteredElements.length - 1, 1, 10)
+            let element = filteredElements[randomIndex]
+            if (!element) return char
 
-        let elementNumber = elements.indexOf(element) + 1    
-        let identifier = element.length === 1 ? "" : offsetIdentifiers[element.toLowerCase().indexOf(char.toLowerCase())]
-        return `${identifier}${elementNumber}`
-    }).join(" ")
-
+            let elementNumber = elements.indexOf(element) + 1
+            let identifier = element.length === 1 ? "" : offsetIdentifiers[element.toLowerCase().indexOf(char.toLowerCase())]
+            
+            return `${identifier}${elementNumber}`
+        })
+    ).then((array) => array.join(" "))
 }
 
 const decraption = (text) => {
     return text.split(" ").map((code) => {
-        if(code === "||") return " "
+            if (code === "||") return " "
 
-        let elementNumber = code.match(/[0-9]+/)
-        if(!elementNumber) return code
+            let elementNumber = code.match(/[0-9]+/)
+            if (!elementNumber) return code
 
-        let element = elements[elementNumber[0] - 1]
+            let element = elements[elementNumber[0] - 1]
 
-        if(element.length !== 1) {
-            let offset = offsetIdentifiers.indexOf(code.substr(0,1))
-            return element.substr(offset, 1)
-        }
+            if (element.length !== 1) {
+                let offset = offsetIdentifiers.indexOf(code.substr(0, 1))
+                return element.substr(offset, 1)
+            }
 
-        return element
-    }).join("").toUpperCase()
+            return element
+        }).join("").toUpperCase()
 }
